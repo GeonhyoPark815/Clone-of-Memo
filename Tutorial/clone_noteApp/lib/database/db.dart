@@ -27,7 +27,7 @@ class DBHelper{
       // 데이터베이스 경로를 지정합니다.
       // 참고: `path` 패키지의 `join` 함수를 사용하는 것이
       // 각 플랫폼 별로 경로가 제대로 생성됐는지 보장할 수 있는 가장 좋은 방법입니다.
-      // getDatabasesPath()가 실행될 때까지 기다림
+      // getDatabasesPath()가 실행될 때까지 기다
       join(await getDatabasesPath(), 'memos.db'),
       // 데이터베이스가 처음 생성될 때, memo를 저장하기 위한 테이블을 생성
       onCreate: (db, version) {
@@ -51,7 +51,7 @@ class DBHelper{
     // Memo를 올바른 테이블에 추가하세요.
     // 동일한 memo가 두번 추가되는 경우를 처리하기 위해 `conflictAlgorithm`을 명시
     // 만약 동일한 memo가 여러번 추가되면, 이전 데이터를 갱신 (덮어씀)
-    // await : 결과가 돌아올 때까지 기다림
+    // await : 결과가 돌아올 때까지 기다림, then의 역할을 대신함
     await db.insert(
       TableName,
       memo.toMap(),
