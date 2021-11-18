@@ -5,6 +5,7 @@ void main() {
   runApp(const MyApp());
 }
 
+// https://www.redhat.com/ko/topics/cloud-native-apps/stateful-vs-stateless
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

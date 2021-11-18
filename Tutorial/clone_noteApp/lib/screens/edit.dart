@@ -1,19 +1,27 @@
+import 'package:clone_noteapp/database/db.dart';
+import 'package:clone_noteapp/database/memo.dart';
 import 'package:flutter/material.dart';
 
-class EditPage extends StatelessWidget {
-  const EditPage({Key? key}) : super(key: key);
+// sha256 사용
+// flutter pub add crypto 실행
+// https://pub.dev/packages/crypto/install
+import 'package:crypto/crypto.dart';
+import 'dart:convert'; // for the utf8.encode method
 
+class EditPage extends StatelessWidget {
+  String title = '';
+  String text = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.delete)),
+                icon: const Icon(Icons.delete),
+            onPressed: (){},),
             IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.save))
+                icon: const Icon(Icons.save),
+            onPressed: saveDB,)
           ],
         ),
         body:
@@ -22,6 +30,9 @@ class EditPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 TextField(
+                  onChanged: (String title) {
+                    this.title = title;
+                  },
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   // 텍스트 스타일 적
                   keyboardType: TextInputType.multiline,
@@ -36,6 +47,9 @@ class EditPage extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.all(10)),
                 TextField(
+                  onChanged: (String text) {
+                    this.text = text;
+                  },
                   keyboardType: TextInputType.multiline,
                   // 자동 줄바꿈
                   maxLines: null,
@@ -52,5 +66,30 @@ class EditPage extends StatelessWidget {
         )
 
     );
+  }
+
+  Future<void> saveDB() async{
+    DBHelper sd = DBHelper();
+
+    var fido = Memo(
+      // DateTime을 이용하여 암호화된 id 생
+      id: Str2sha512(DateTime.now().toString()),
+      title: this.title,
+      text: this.text,
+      createTime: DateTime.now().toString(),
+      editTime: DateTime.now().toString(),
+    );
+
+    await sd.insertMemo(fido);
+
+    print(await sd.memos());
+  }
+
+  // ID 암호
+  String Str2sha512(String text) {
+    var bytes = utf8.encode(text); // data being hashed
+
+    var digest = sha512.convert(bytes);
+    return digest.toString();
   }
 }

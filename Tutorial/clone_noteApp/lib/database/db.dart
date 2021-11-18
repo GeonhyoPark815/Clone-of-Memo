@@ -8,32 +8,38 @@ import 'package:path/path.dart';
 import 'package:clone_noteapp/database/memo.dart';
 
 // tabel 이름은 memos로 구현
-final String TableName: 'memos';
+final String TableName = 'memos';
 
 class DBHelper{
   var _db;
   // var 변수 선언 - 중복 선언 가능
 
-  // Future : 지금은 없지만 미래에 요청한 데이터를 받을 수 있음
-  // 따로 수행할 수 있는 상자가 주어
+  // Future : 지금은 없지만 미래에 요청한 데이터를 받을 수 있음용
+  // 따로 수행할 수 있는 상자가 주어짐
   // async : 비동기식 처리짐
   // 본 수행을 요청 후 응답을 기다리지 않고 다음 절차로 넘어감
   // https://velog.io/@jintak0401/FlutterDart-에서의-Future-asyncawait
+
+  // 미래에 Database 형태의 자료가 반환될 것
+  // 'Database'를 요청할 때마다 '_db'로 돌려줌
   Future<Database> get database async {
     // _db가 비어있다면 그대로 return
     if ( _db != null ) return _db;
-    // 'Database'를 요청할 때마다 '_db'로 돌려줌
     _db = openDatabase(
       // 데이터베이스 경로를 지정합니다.
       // 참고: `path` 패키지의 `join` 함수를 사용하는 것이
       // 각 플랫폼 별로 경로가 제대로 생성됐는지 보장할 수 있는 가장 좋은 방법입니다.
-      // getDatabasesPath()가 실행될 때까지 기다
+      // getDatabasesPath()가 실행될 때까지 기다림
+
+      // await : 결과가 돌아올 때까지 기다림, then의 역할을 대신
+      // await과 then의 차이
+      // https://velog.io/@juni416/Future-then-vs-await-async-비교-및-쓰는-법
       join(await getDatabasesPath(), 'memos.db'),
       // 데이터베이스가 처음 생성될 때, memo를 저장하기 위한 테이블을 생성
       onCreate: (db, version) {
         // 데이터베이스에 CREATE TABLE 수행
         return db.execute(
-          "CREATE TABLE memos(id INTEGER PRIMARY KEY, title TEXT, text TEXT, createTime TEXT, editTime TEXT)",
+          "CREATE TABLE memos(id TEXT PRIMARY KEY, title TEXT, text TEXT, createTime TEXT, editTime TEXT)",
         );
       },
       // 버전을 설정하세요. onCreate 함수에서 수행되며 데이터베이스 업그레이드와 다운그레이드를
@@ -44,17 +50,17 @@ class DBHelper{
   }
 
   // Flutter Docs의 경우 메인 코드에 넣었지만
-  // 재즐보프에서는 DBHelper class에 넣
+  // 재즐보프에서는 DBHelper class에 넣음
   Future<void> insertMemo(Memo memo) async {
     final db = await database;
 
     // Memo를 올바른 테이블에 추가하세요.
     // 동일한 memo가 두번 추가되는 경우를 처리하기 위해 `conflictAlgorithm`을 명시
     // 만약 동일한 memo가 여러번 추가되면, 이전 데이터를 갱신 (덮어씀)
-    // await : 결과가 돌아올 때까지 기다림, then의 역할을 대신함
     await db.insert(
       TableName,
       memo.toMap(),
+      // 동일한 memo가 중복되는 것을 방지하기 위해 ConflictAlgorithm 사
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }

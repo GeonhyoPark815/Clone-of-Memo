@@ -11,13 +11,17 @@ class Memo{
   // https://blog.naver.com/goddlaek/220889229659
 
   // 원소 타입으로 final이 사용되어 각 변수는 상수가 된다.
-  final int id; // 번호
+  final String id; // 번호
   final String title; // 제목
   final String text; // 문서
   final String createTime; // 생성 시간
   final String editTime; // 편집 시간
 
-  Memo({this.id, this.title, this.text, this.createTime, this.editTime});
+  // 암묵적인 필수 초기 함수
+  // https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=horajjan&logNo=220498366683
+  Memo({required this.id, required this.title, required this.text, required this.createTime, required this.editTime});
+
+
 
   // Memo(객체)를 Map(Json 스트)으로 변환
   // key는 데이터베이스의 컬럼 명과 동일해야 함
