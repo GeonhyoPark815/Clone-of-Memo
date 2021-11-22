@@ -1,10 +1,14 @@
-import 'package:clone_noteapp/screens/edit.dart';
+/// 1차 수정 완료
+
+// import 'package:clone_noteapp/screens/write.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'edit.dart';
+import 'write.dart';
 
 import 'package:clone_noteapp/database/db.dart';
 import 'package:clone_noteapp/database/memo.dart';
+
+import 'package:clone_noteapp/screens/view.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -12,7 +16,8 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ///State<MyHomePage> => _MyHomePageState
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -50,7 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
-                  context, CupertinoPageRoute(builder: (context) => EditPage()))
+            /// WritePage(id: '',) => WritePage()
+                  context, CupertinoPageRoute(builder: (context) => WritePage(id: '',)))
+            /// .then((value) {setState(() {}); });
               .then((value) {
             // setState() 사용법
             // https://terry1213.github.io/flutter/flutter-statefulwidget-setState/
@@ -64,6 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  // memoBuilder / Inkwell 에서 Navigator.push로 대체
+  /*
   List<Widget> LoadMemo() {
     List<Widget> memoList = [];
     memoList.add(Container(
@@ -72,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
     return memoList;
   }
+   */
 
   // memo를 불러오는 함수
   // db.dart / DBHelper / memos
@@ -88,7 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // 삭제 경고 및 실행 기능
   // https://here4you.tistory.com/176
   void showAlertDialog(BuildContext context) async {
-    String result = await showDialog(
+    /// String result = => X
+    await showDialog(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
@@ -102,13 +113,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pop(context, "삭제");
                 setState(() {
                   deleteMemo(deleteID);
-                  deleteID = "";
+                  // deleteID = "";
                 });
+                deleteID = "";
               },
             ),
             FlatButton(
               child: Text('취소'),
               onPressed: () {
+                /// X => deleteID = "";
+                deleteID = "";
                 Navigator.pop(context, "취소");
               },
             ),
@@ -122,11 +136,13 @@ class _MyHomePageState extends State<MyHomePage> {
   // https://medium.com/nonstopio/flutter-future-builder-with-list-view-builder-d7212314e8c9
 
   Widget memoBuilder(BuildContext parentContext) {
-    return FutureBuilder(
+    /// X => <List<Memo>>
+    return FutureBuilder<List<Memo>>(
       builder: (context, Snap) {
         // null로 판단하기는 불가능
         // 내용은 비었으나 null은 아님
         // 따라서 isEmpty 사용
+        /// if ((Snap.data as List).isEmpty) => if (snap.data == null || snap.data.isEmpty) -> X
         if ((Snap.data as List).isEmpty) {
           return Container(
             alignment: Alignment.center,
@@ -140,13 +156,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // 애니메이션 기능 추가
           // 추가 공부 필요 - 왜 ListView에 들어가는가?
           physics: BouncingScrollPhysics(),
+          /// X => padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           itemCount: (Snap.data as List).length,
           itemBuilder: (context, index) {
             Memo memo = (Snap.data as List)[index];
             // InkWell : 제스처 명령 가능
             return InkWell(
-              // 1번 탭하면 이동
-              onTap: () {},
+              // 1번 탭하면 ViewPage로 이동
+              onTap: () {
+                Navigator.push(
+                    parentContext,
+                    CupertinoPageRoute(
+                        builder: (context) => ViewPage(id : memo.id,)));
+              },
               // 길게 누르면 삭제
               onLongPress: () {
                 // showAlertDialog에서 memo.id 호출이 불가능
@@ -188,14 +211,23 @@ class _MyHomePageState extends State<MyHomePage> {
                           Text(
                             memo.title,
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600
+                            ),
+                            // 오버플로우 해결
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             memo.text,
                             style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w400),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400
+                            ),
+                            // 오버플로우 해결
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ]),
+                        ],
+                    ),
                     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -207,8 +239,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 fontWeight: FontWeight.w300,
                                 color: Colors.black54),
                             textAlign: TextAlign.end,
-                          )
-                        ])
+                          ),
+                        ],
+                    ),
                   ],
                 ),
               ),
