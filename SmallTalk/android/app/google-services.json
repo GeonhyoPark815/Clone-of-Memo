@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "186238927909",
+    "project_id": "smalltalklogin",
+    "storage_bucket": "smalltalklogin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186238927909:android:a2693422e9116abdad6bcc",
+        "android_client_info": {
+          "package_name": "com.example.small_talk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186238927909-n93iqkto9dim76dehkim765u8re0ci0s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.small_talk",
+            "certificate_hash": "113375494bf71cd5bb2e2a2bbd7fa14174120970"
+          }
+        },
+        {
+          "client_id": "186238927909-6tuig2r8s4ckr4g26gudtaclkqdvs13n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtFGblniwlhjfr0AQ_uYcouMfqwE8KEP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186238927909-6tuig2r8s4ckr4g26gudtaclkqdvs13n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

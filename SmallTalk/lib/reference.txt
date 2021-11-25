@@ -1,0 +1,30 @@
+- Galaxy Emulator Skins Download
+https://developer.samsung.com/galaxy-emulator-skin
+- Add Galaxy Emulator Skins on AVD
+https://itwise.tistory.com/45
+
+- Kotlin Gradle Version
+https://kotlinlang.org/docs/gradle.html
+
+- 'minSDKVersion' Error
+https://json8.tistory.com/177
+
+- Flutterflow
+https://flutterflow.io
+
+- Size of App
+** https://brunch.co.kr/@dalgudot/98
+https://m.blog.naver.com/chandong83/221890678439
+http://shinyeonseok.com/gui_specification/
+
+- Is it necessary to use Grid for Design?
+https://brunch.co.kr/@plusx/3
+
+- IOS & Android Design Guidelines
+https://brunch.co.kr/@thinkaboutlove/311
+
+- dp <-> px
+https://blog.cracker9.io/2018/03/13/Android_DPI/
+
+- LP in Flutter
+https://points.tistory.com/66
